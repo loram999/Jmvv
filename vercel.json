@@ -4,7 +4,7 @@
       "maxDuration": 30
     },
     "api/autobet.js": {
-      "maxDuration": 600
+      "maxDuration": 300
     }
   },
   "rewrites": [
