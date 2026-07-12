@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "api/trx.js": {
+      "maxDuration": 30
+    },
+    "api/autobet.js": {
+      "maxDuration": 600
+    }
+  },
+  "rewrites": [
+    { "source": "/api/trx", "destination": "/api/trx" },
+    { "source": "/api/autobet", "destination": "/api/autobet" },
+    { "source": "/(.*)", "destination": "/public/$1" }
+  ]
+}
