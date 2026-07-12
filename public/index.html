@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>TRX Trading Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     LANDING PAGE
+     ═══════════════════════════════════════════════════ -->
+<div class="page active" id="page-landing">
+    <div class="landing">
+        <div class="landing-logo">TRX TRADING</div>
+        <div class="landing-subtitle">Professional TRX Chart Analysis & Auto-Betting Platform</div>
+        
+        <div class="landing-features">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Live Chart</div>
+                <div class="feature-desc">Real-time TRX block chart with professional analysis tools</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Quick Bet</div>
+                <div class="feature-desc">One-click BIG/SMALL betting directly from the chart</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">Auto Bet</div>
+                <div class="feature-desc">Smart auto-betting with strategies that runs 24/7</div>
+            </div>
+        </div>
+        
+        <button class="landing-btn" onclick="showPage('login')">
+            🚀 Get Started
+        </button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     LOGIN PAGE
+     ═══════════════════════════════════════════════════ -->
+<div class="page" id="page-login">
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-title">TRX TRADING</div>
+            <div class="login-sub">Connect your game account to start trading</div>
+            
+            <div class="site-selector">
+                <button class="site-btn active" id="site-6Lottery" onclick="selectSite('6Lottery')">6Lottery</button>
+                <button class="site-btn" id="site-777" onclick="selectSite('777BIGWIN')">777BIGWIN</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input class="form-input" id="loginPhone" type="tel" placeholder="Enter phone number" maxlength="15">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input class="form-input" id="loginPassword" type="password" placeholder="Enter password" maxlength="50">
+            </div>
+            
+            <button class="login-btn" id="loginBtn" onclick="handleLogin()">Login</button>
+            
+            <div id="loginStatus"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CHART PAGE (TRX CHART + BET)
+     ═══════════════════════════════════════════════════ -->
+<div class="page" id="page-chart">
+    <div class="chart-page">
+        <!-- Header -->
+        <div class="chart-header">
+            <div class="header-top">
+                <div class="header-logo">TRX CHART</div>
+                <div class="header-badge"><div class="live-dot"></div>LIVE</div>
+            </div>
+            <div class="header-info">
+                <div class="info-cell">
+                    <div class="info-lbl">Current Issue</div>
+                    <div class="info-val" id="hCurrent">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="info-lbl">Next Issue</div>
+                    <div class="info-val" id="hNext">—</div>
+                </div>
+                <div class="header-right">
+                    <div class="user-pill">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <span class="user-name" id="userName">User</span>
+                        <span class="user-balance" id="userBalance">0 Ks</span>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bet Buttons -->
+        <div class="bet-section">
+            <div class="bet-choices">
+                <button class="bet-btn big" onclick="showBetModal('B')">
+                    BIG
+                </button>
+                <button class="bet-btn small" onclick="showBetModal('S')">
+                    SMALL
+                </button>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <div id="tvChart"></div>
+        </div>
+
+        <!-- History -->
+        <div class="history-section">
+            <div class="history-title">Recent Bets</div>
+            <div class="history-list" id="historyList">
+                <div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:13px;">
+                    No bets yet. Tap BIG or SMALL to place your first bet.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     AUTO BET PAGE
+     ═══════════════════════════════════════════════════ -->
+<div class="page" id="page-autobet">
+    <div class="autobet-page">
+        <div class="autobet-header">
+            <div class="autobet-title">AUTO BET</div>
+            <button class="autobet-access-btn" onclick="showPage('access')">Access Info</button>
+        </div>
+
+        <!-- Bet Type -->
+        <div class="settings-card">
+            <div class="settings-card-title">Bet Type</div>
+            <div class="type-toggle">
+                <button class="type-btn active" id="type-BS" onclick="setBetType('BS')">BIG / SMALL</button>
+                <button class="type-btn" id="type-COLOR" onclick="setBetType('COLOR')">COLOR</button>
+            </div>
+        </div>
+
+        <!-- Strategy -->
+        <div class="settings-card">
+            <div class="settings-card-title">Strategy</div>
+            <div class="strategy-grid">
+                <button class="strategy-btn active" id="strategy-BS_ORDER" onclick="setStrategy('BS_ORDER')">BS Order</button>
+                <button class="strategy-btn" id="strategy-ALTERNATE" onclick="setStrategy('ALTERNATE')">Alternate</button>
+                <button class="strategy-btn" id="strategy-TREND_FOLLOW" onclick="setStrategy('TREND_FOLLOW')">Trend Follow</button>
+                <button class="strategy-btn" id="strategy-DREAM" onclick="setStrategy('DREAM')">Dream</button>
+                <button class="strategy-btn" id="strategy-BABIO" onclick="setStrategy('BABIO')">Babio</button>
+                <button class="strategy-btn" id="strategy-LYZO" onclick="setStrategy('LYZO')">Lyzo</button>
+                <button class="strategy-btn" id="strategy-SNIPER" onclick="setStrategy('SNIPER')">Sniper</button>
+                <button class="strategy-btn" id="strategy-AI_PREDICTION" onclick="setStrategy('AI_PREDICTION')">AI</button>
+            </div>
+            
+            <div id="patternSection">
+                <div style="margin-bottom:8px;">
+                    <label class="form-label">B/S Pattern</label>
+                    <input class="pattern-input" id="patternInput" value="BSBSBSBSBS" maxlength="20" oninput="updatePattern()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Bet Sizes -->
+        <div class="settings-card">
+            <div class="settings-card-title">Bet Wrager (Martingale)</div>
+            <div class="bet-sizes-display" id="betSizesDisplay"></div>
+            <div class="bet-size-input-row">
+                <input class="form-input" id="betSizeInput" type="number" placeholder="Enter amount" min="1">
+                <button class="bet-size-add-btn" onclick="addBetSize()">+ Add</button>
+            </div>
+        </div>
+
+        <!-- Stop Loss / Profit Target -->
+        <div class="settings-card">
+            <div class="settings-card-title">Risk Management</div>
+            
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>Stop Loss</span>
+                    <span id="stopLossSliderValue">0</span>
+                </div>
+                <div style="position:relative;">
+                    <div class="slider-track"><div class="slider-fill" style="width:0%"></div></div>
+                    <input type="range" id="stopLossSlider" min="0" max="100000" step="100" value="0" oninput="updateSlider('stopLossSlider')">
+                </div>
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>Profit Target</span>
+                    <span id="profitTargetSliderValue">0</span>
+                </div>
+                <div style="position:relative;">
+                    <div class="slider-track"><div class="slider-fill" style="width:0%"></div></div>
+                    <input type="range" id="profitTargetSlider" min="0" max="500000" step="100" value="0" oninput="updateSlider('profitTargetSlider')">
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Range -->
+        <div class="settings-card">
+            <div class="settings-card-title">Time Range (Optional)</div>
+            <div class="time-range">
+                <input type="time" id="timeStart" value="">
+                <span style="color:var(--text-secondary);">to</span>
+                <input type="time" id="timeEnd" value="">
+            </div>
+        </div>
+
+        <!-- Start/Stop Controls -->
+        <div class="auto-controls">
+            <button class="start-btn" id="startAutoBetBtn" onclick="startAutoBet()">▶ START</button>
+            <button class="stop-btn" id="stopAutoBetBtn" onclick="stopAutoBet()" disabled>■ STOP</button>
+        </div>
+
+        <!-- Status Panel -->
+        <div class="status-panel" id="statusPanel">
+            <div class="settings-card-title">Auto Bet Status</div>
+            <div class="status-row">
+                <span class="status-key">Status</span>
+                <span id="statusRunning">—</span>
+            </div>
+            <div class="status-row">
+                <span class="status-key">Total Profit</span>
+                <span id="statusProfit">—</span>
+            </div>
+            <div class="status-row">
+                <span class="status-key">Rounds</span>
+                <span id="statusRounds">0</span>
+            </div>
+            <div class="status-row">
+                <span class="status-key">Balance</span>
+                <span id="statusBalance">—</span>
+            </div>
+            <div class="status-row">
+                <span class="status-key">Started</span>
+                <span id="statusStart">—</span>
+            </div>
+        </div>
+
+        <!-- Auto Bet History -->
+        <div class="autobet-history">
+            <div class="settings-card-title">Auto Bet History</div>
+            <div id="autoBetHistory"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     ACCESS / LOGIN INFO PAGE
+     ═══════════════════════════════════════════════════ -->
+<div class="page" id="page-access">
+    <div class="access-page">
+        <div class="access-container">
+            <div class="access-title">📋 Access Info</div>
+            <div class="access-sub">Your login credentials are securely stored locally</div>
+            
+            <div id="accessInfo" style="margin-top:20px;">
+                <div class="status-row">
+                    <span class="status-key">Site</span>
+                    <span id="accessSite" style="font-weight:600;">—</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-key">Username</span>
+                    <span id="accessUsername" style="font-weight:600;">—</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-key">Balance</span>
+                    <span id="accessBalance" style="font-weight:700; color:var(--accent-green);">—</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-key">Auto Bet ID</span>
+                    <span id="accessBetId" style="font-family:monospace;">—</span>
+                </div>
+            </div>
+
+            <button class="login-btn" style="margin-top:24px;" onclick="showPage('login')">
+                Change Account
+            </button>
+            <button class="login-btn" style="margin-top:12px; background:var(--bg-card); color:var(--text-primary); border:1px solid var(--border);" onclick="showPage('autobet')">
+                ← Back
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     BET AMOUNT MODAL
+     ═══════════════════════════════════════════════════ -->
+<div class="bet-modal" id="betModal">
+    <div class="bet-modal-content">
+        <div class="bet-modal-title">Select Amount</div>
+        <div class="bet-modal-choice" id="betModalChoice"></div>
+        
+        <div class="amount-grid">
+            <button class="amount-btn" onclick="selectAmount(100)">100 Ks</button>
+            <button class="amount-btn" onclick="selectAmount(200)">200 Ks</button>
+            <button class="amount-btn" onclick="selectAmount(500)">500 Ks</button>
+            <button class="amount-btn" onclick="selectAmount(1000)">1,000 Ks</button>
+            <button class="amount-btn" onclick="selectAmount(2000)">2,000 Ks</button>
+            <button class="amount-btn" onclick="selectAmount(5000)">5,000 Ks</button>
+        </div>
+        
+        <div class="custom-amount">
+            <input class="form-input" id="customAmount" type="number" placeholder="Custom amount" min="1">
+            <button class="custom-amount-btn" onclick="setCustomAmount()">Set</button>
+        </div>
+        
+        <button class="bet-confirm-btn" id="betConfirmBtn" onclick="placeBet()">Confirm Bet</button>
+        <button class="bet-cancel-btn" onclick="closeBetModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     BOTTOM NAVIGATION
+     ═══════════════════════════════════════════════════ -->
+<div class="bottom-nav" id="bottomNav">
+    <button class="nav-item" id="nav-chart" onclick="showPage('chart')">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Chart</span>
+    </button>
+    <button class="nav-item" id="nav-autobet" onclick="showPage('autobet')">
+        <span class="nav-icon">🤖</span>
+        <span class="nav-label">Auto Bet</span>
+    </button>
+    <button class="nav-item" id="nav-login" onclick="showPage('login')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Account</span>
+    </button>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
